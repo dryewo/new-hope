@@ -49,12 +49,18 @@ You can type commands into the REPL and press Ctrl-Enter (Cmd-Enter) to evaluate
 
 ```clj
 (comment
-  (- 10 (* 2 3))
-  (conj '(3 4) 2 1)
+  (conj [1 2 3] 4)
   )
 ```
 
-It's just a scratchpad, a comment block containing code snippets. To evaluate a snippet, set the caret to the closing parenthesis and use REPL -> Send '...' to REPL context menu action. The expression will be evaluated in the context of the current source file namespace (e.g. `new-hope.week1`). Line breaks don't matter, any expression can be evaluated this way.
+It's just a scratchpad, a comment block containing code snippets. To evaluate a snippet, set the caret to the closing parenthesis and use REPL -> Send '...' to REPL context menu action. The expression will be evaluated in the context of the current source file namespace (e.g. `new-hope.week1`).
+
+New lines don't matter, any expression can be evaluated this way.
+
+* If you set the caret after `4`, only `4` will be evaluated, yielding `4`.
+* If you set the caret on `]`, the vector `[1 2 3]` will be evaluated, yielding `[1 2 3]`.
+* If you set the caret on `)`, the entire `(conj [1 2 3] 4)` form will be evaluated, yielding `[1 2 3 4]`.
+* If you set the caret on the closing `)` of the comment block, the comment block will be evaluated (by doing nothing), yielding `nil`.  
 
 #### Unit test expressions
 
