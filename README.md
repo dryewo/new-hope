@@ -23,11 +23,19 @@ Fork this repo and clone.
 
 The workflow is called "REPL Driven Development". REPL stands for Read-Evaluate-Print-Loop and means interpreter command line mode.
 
+The goal of the workflow is to reduce the turnaround time (aka feedback loop) in the development microcycle:
+
+```
+Edit the code -> Run it -> Repeat
+```
+
+To prepare for work, do the following steps:
+
 1. Open the cloned folder in IntelliJ, it should automatically recognize the project type as Leiningen and load it.
 2. Right-click on the project name in the project pane and select "Run 'REPL for new-hope'"
 3. After the REPL loads, run `(refresh)` in it once.
 
-This is your initial position. You have a code editor, you have a JVM instance running and an interpreter command line attached to it. All the project source code is loaded into the JVM.
+This is your initial position. You have a code editor, you have a JVM instance running and a REPL session attached to it. All the project source code is loaded into the JVM.
 
 ### Evaluation
 
@@ -79,11 +87,13 @@ In order to avoid mouse clicking it's handy to set a key combination, like Ctrl-
 
 #### Evaluating all the source code at once (reloading)
 
-There are actions in the Tools -> REPL menu or in the REPL context menu to evaluate every expression in the current file or in every file that has changed since last reload.
+There are actions in the Tools -> REPL menu or in the REPL context menu to evaluate every expression in the current file (Load file) or in every file that has changed since last reload (Sync files).
 
 The same effect is achieved by running `(refresh)` function in the REPL directly (in the `user` namespace).
 
 Contents of the `comment` blocks are ignored.
+
+When a file is reloaded, all the unit tests in it are automatically run.
 
 ### Doing an exercise
 
@@ -120,7 +130,7 @@ In order to keep like this, the recommended way of working on an exercise is:
 
 ### Running all the tests
 
-To run all the unit tests without starting the REPL, use
+To run all the unit tests without starting the REPL, run
 
 ```
 $ lein midje
