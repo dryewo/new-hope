@@ -30,6 +30,7 @@
 (comment
   (reverse [1 2 3 4])
   (second [4 3 2 1])
+  (first (next [4 3 2 1]))
   (butlast [1 2 3 4])
   (last [1 2 3])
   )

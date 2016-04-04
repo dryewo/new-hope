@@ -134,6 +134,12 @@ In order to keep like this, the recommended way of working on an exercise is:
 2. Use `comment` block to play around and experiment.
 3. Write unit tests that check correctness of your implementation once you figure it out.
 
+### Looking up the implementation
+
+Press and hold Ctrl (Cmd) and hover your mouse cursor over a symbol — it will show the function signature.
+
+Ctrl (Cmd) and click — it will go to definition.
+
 ### Running all the tests
 
 To run all the unit tests without starting the REPL, run
