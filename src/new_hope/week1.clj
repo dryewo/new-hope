@@ -149,3 +149,68 @@
        (duplicate-a-sequence [[1 2] [3 4]]) => '([1 2] [1 2] [3 4] [3 4]))
 
 ;; Day 5
+
+(defn compress-a-sequence
+  "eliminates all repeated elements from a sequence"
+  [x]
+  (loop [input x result []]
+    (if (not (empty? input))
+      (if (= (last result) (first input))
+        (recur (rest input) result)
+        (recur (rest input) (conj result (first input)))
+       )
+      result)
+  )
+)
+
+(facts  (apply str (compress-a-sequence "Leeeeeerrroyyy")) => "Leroy"
+        (compress-a-sequence [1 1 2 3 3 2 2 3]) => '(1 2 3 2 3)
+        (compress-a-sequence [[1 2] [1 2] [3 4] [1 2]]) => '([1 2] [3 4] [1 2]))
+
+(defn pack-a-sequence
+  "packs consecutive duplicates into sublist"
+  [x]
+  (loop [input x result '()]
+    (if (not (empty? input))
+      (recur (rest input) (if (= (last (last result)) (first input))
+                            (concat (butlast result) (list (conj (last result) (first input))))
+                            (concat result (list (list (first input))))
+                            )
+             )
+      result)
+    )
+  )
+
+(facts (pack-a-sequence [1 1 2 1 1 1 3 3]) => '((1 1) (2) (1 1 1) (3 3))
+  (pack-a-sequence [:a :a :b :b :c]) => '((:a :a) (:b :b) (:c))
+       (pack-a-sequence [[1 2] [1 2] [3 4]]) => '(([1	2] [1 2]) ([3 4])))
+
+(defn drop-every-nth-item
+  "Drops every n-th item of a coll"
+  [x nth]
+  (loop [input x result []]
+    (if (not (empty? input))
+      (let [nthpack (take nth input)]
+        (if (= (count nthpack) nth)
+          (recur (drop nth input) (concat result (butlast nthpack)))
+          (recur (drop nth input) (concat result nthpack)))
+      )
+      result
+    )
+  )
+)
+
+(facts (drop-every-nth-item [1 2 3 4 5 6 7 8]	3) => [1 2 4 5 7 8]
+        (drop-every-nth-item [:a :b :c :d :e :f] 2) => [:a :c :e]
+        (drop-every-nth-item [1	2	3	4	5	6] 4) => [1 2 3 5 6])
+
+(defn replicate-a-sequence
+  "replicates each element of a sequence a variable number of times"
+  [x y]
+  ())
+
+(facts (replicate-a-sequence [1 2 3] 2)	=> '(1 1 2 2 3 3)
+        (replicate-a-sequence[:a :b] 4) => '(:a :a :a :a :b :b :b :b)
+        (replicate-a-sequence [4 5 6] 1) => '(4 5 6)
+        (replicate-a-sequence [[1 2] [3 4]] 2) =>  '([1 2] [1 2] [3 4] [3 4])
+        (replicate-a-sequence [44 33] 2) => [44 44 33 33])
