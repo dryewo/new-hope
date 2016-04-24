@@ -1,6 +1,7 @@
 (ns new-hope.week2
   (:require [midje.sweet :refer :all])
   (:require [clojure.test :refer :all])
+  (:require [clojure.set :refer :all])
   )
 
 
@@ -91,10 +92,10 @@
 
 (defn simple-closure
   "returns function that calculates power of the argument"
-  [x]
+  [power]
   (fn [base]
-    (loop [inputx base count 1]
-      (if (>= count x)
+    (loop [inputx 1 count 1]
+      (if (> count power)
         inputx
         (recur (* inputx base) (inc count))
       )
@@ -108,5 +109,77 @@
   (is (= [1 2 4 8 16] (map #((simple-closure %) 2) [0 1 2 3 4])))
 )
 
+(defn cartesian-product
+  "calculates the cartesian product of two sets"
+  [a b]
+  (set (apply concat (for [element b] (set (map #(conj [%] element) a)))))
+)
 
+(deftest test-cartesian-product
+  (is (=  #{[1 4] [2 4] [3 4] [1 5] [2 5] [3 5]} (cartesian-product #{1 2 3} #{4 5})))
+  (is (= 300 (count (cartesian-product (into #{} (range	10)) (into #{} (range 30)) ))))
+  (is (=	(cartesian-product #{"ace" "king" "queen"} #{"spade" "heart" "diamond" "club"})
+      #{["ace" "spade"] ["ace" "heart"] ["ace" "diamond"] ["ace" "club"] ["king" "spade"] ["king" "heart"]
+        ["king" "diamond"] ["king" "club"] ["queen" "spade"] ["queen" "heart"] ["queen" "diamond"] ["queen" "club"]}))
+)
 
+; Day 4
+
+(defn symmetric-difference
+  "calculates the symmetric difference of two sets"
+  [a b]
+  (set (concat (clojure.set/difference a b) (clojure.set/difference b a)))
+)
+
+(deftest test-symmetric-difference
+  (is (= #{2 4 6 7} (symmetric-difference #{1 2 3 4 5 6} #{1 3 5 7}) ))
+  (is (= (symmetric-difference	#{:a :b :c} #{}) #{:a :b :c}))
+  (is (= (symmetric-difference #{} #{4 5 6}) #{4 5 6}))
+  (is (= (symmetric-difference #{[1 2] [2 3]} #{[2 3] [3 4]}) #{[1 2] [3 4]}))
+)
+
+(defn least-common-multiple-two-arguments
+  "calculates the least common multiple of the numeric arguments"
+  [a b]
+  (/ (* a b) (great-common-divisor a b))
+  )
+
+(defn least-common-multiple
+  "calculates the least common multiple of the numeric arguments"
+  [& args]
+  (reduce least-common-multiple-two-arguments args)
+)
+
+(deftest test-least-common-multiple
+  (is (= (least-common-multiple 2 3) 6))
+  (is (= (least-common-multiple 5 3 7)) 105)
+  (is (= (least-common-multiple 1/3 2/5)	2))
+  (is (= (least-common-multiple 3/4 1/6)	3/2))
+  (is (= (least-common-multiple 7 5/7 2 3/5) 210))
+)
+
+; Day 5
+
+(defn pascals-triangle
+  "calculates pascal triangle sequence on a any number of arguments"
+  [n]
+  (let [line [1]]
+    (loop [input (range n) count 1] (conj line ())))
+)
+
+; def pascal(n):
+; line = [1]
+; for k in range(n):
+;   line.append(line[k] * (n-k) / (k+1))
+; return line
+
+(deftest test-pascals-triangle
+  (is (= (pascals-triangle 1) [1]))
+  (is (= (pascals-triangle 11) [1 10 45 120 210 252 210 120 45 10 1]))
+  (is (= (map pascals-triangle (range	1	6)) [      [1]
+                                                  [1 1]
+                                                 [1 2 1]
+                                                [1 3 3 1]
+                                               [1 4 6 4 1]])
+  )
+)
