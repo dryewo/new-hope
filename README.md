@@ -7,6 +7,8 @@ This is a pre-configured project that you can use to do exercises from the book:
 
 [Living Clojure](http://shop.oreilly.com/product/0636920034292.do) by Carin Meier
 
+Exercises are given in a weekly plan in Chapter 10.
+
 
 ## Prerequisites
 
