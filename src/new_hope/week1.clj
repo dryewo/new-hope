@@ -21,6 +21,31 @@
 (facts "some facts"
   (second [2 3 4]) => 3)
 
+;; Day 1
+(facts "about data structures"
+  ; Strings
+  (.toUpperCase "hello world") => "HELLO WORLD"
+  ; Lists
+  '(:a :b :c) => (list :a :b :c)
+  (conj '(2 3 4) 1) => '(1 2 3 4)
+  '(1 2 3 4) => (conj '(3 4) 2 1)
+  ; Vectors
+  (= [:a :b :c] (list :a :b :c)) (vec '(:a :b :c)) (vector :a :b :c)
+  (conj [1 2 3] 4) => [1 2 3 4]
+  (conj [1 2] 3 4) => [1 2 3 4]
+  ; Sets
+  (set '(:a :a :b :c :c :c :c :d :d)) => #{:a :b :c :d}
+  (clojure.set/union #{:a :b :c} #{:b :c :d}) => #{:a :b :c :d}
+  (conj #{1 4 3} 2) => #{1 2 3 4}
+  ; Maps
+  ((hash-map :a 10, :b 20, :c 30) :b) => 20
+  (:b {:a 10, :b 20, :c 30}) => 20
+  (conj {:a 1} {:b 2} [:c 3]) => {:a 1, :b 2, :c 3}
+  ; Sequences
+  (first '(3 2 1)) => 3
+  (second [2 3 4]) => 3
+  (last (list 1 2 3)) => 3)
+
 ;; Day 4
 
 (def second-to-last
