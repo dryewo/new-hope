@@ -114,19 +114,50 @@
        (compress-seq [[1 2] [1 2] [3 4] [1 2]]) => '([1 2] [3 4] [1 2]))
 
 ;; http://www.4clojure.com/problem/31
-(def pack-seq
-  (fn [x y]
-    (if (not (seq? x))
-      (if (= x y)
-        (list x y))
-      (if (= (first (last x)) y)
-        (let [last_element (last x)]
-          (conj (drop-last x) (conj last_element y)))
-        (conj x (list y))))))
+(defn pack-seq [coll]
+  (loop [in coll
+         mid '()
+         out '()]
+    (if (not (seq in))
+      (rest (reverse (conj out mid)))
+      (if (= (first in) (first mid))
+        (recur (rest in) (conj mid (first in)) out)
+        (recur (rest in) (conj '() (first in)) (conj out mid))))))
 
-(defn reduce-coll [coll]
-  (reductions pack-seq coll))
+(fn [coll] (partition-by identity coll))
 
+(facts "about pack-seq"
+       (pack-seq [1 1 2 1 1 1 3 3]) => '((1 1) (2) (1 1 1) (3 3))
+       (pack-seq [:a :a :b :b :c]) => '((:a :a) (:b :b) (:c))
+       (pack-seq [[1 2] [1 2] [3 4]]) => '(([1 2] [1 2]) ([3 4])))
 
-(facts "about reduce-coll"
-       (reduce-coll [1 1 2 1 1 1 3 3]) => '((1 1) (2) (1 1 1) (3 3)))
+;; https://www.4clojure.com/problem/41
+(defn drop-n [coll n]
+  (loop [in coll
+         mid []
+         out []]
+    (if (not (seq in))
+      (concat out mid)
+    (if (= (count mid) (- n 1))
+      (recur (rest in) [] (concat out mid))
+      (recur (rest in) (conj mid (first in)) out)))))
+
+(facts "about drop-n"
+       (drop-n [1 2 3 4 5 6 7 8] 3) => [1 2 4 5 7 8]
+       (drop-n [:a :b :c :d :e :f] 2) => [:a :c :e]
+       (drop-n [1 2 3 4 5 6] 4) => [1 2 3 5 6])
+
+;;https://www.4clojure.com/problem/33
+(defn repeat-meat [coll n]
+  (loop [in coll
+         out []]
+    (if (not (seq in))
+      out
+      (recur (rest in) (concat out (repeat n (first in)))))))
+
+(facts "about repeat-meat"
+       (repeat-meat [1 2 3] 2) => '(1 1 2 2 3 3)
+       (repeat-meat [:a :b] 4) => '(:a :a :a :a :b :b :b :b)
+       (repeat-meat [4 5 6] 1) => '(4 5 6)
+       (repeat-meat [[1 2] [3 4]] 2) => '([1 2] [1 2] [3 4] [3 4])
+       (repeat-meat [44 33] 2) => [44 44 33 33])
