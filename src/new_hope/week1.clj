@@ -46,6 +46,35 @@
   (second [2 3 4]) => 3
   (last (list 1 2 3)) => 3)
 
+;; Day 2
+(facts "about functions"
+  (rest [10 20 30 40]) => '(20 30 40)
+  ;; Add-five
+  ((fn add-five [x] (+ x 5)) 3) => 8
+  ((fn [x] (+ x 5)) 3) => 8
+  (#(+ % 5) 3) => 8
+  ((partial + 5) 3) => 8
+  ;; Double down
+  ((fn [x] (* 2 x)) 2) => 4
+  ((fn [x] (* 2 x)) 3) => 6
+  (#(* % 2) 11) => 22
+  ((partial * 2) 7) => 14
+  ;; Hello World
+  ((fn [x] (format "Hello, %s!" x)) "Dave") => "Hello, Dave!"
+  (#(format "Hello, %s!" %) "Jenn") => "Hello, Jenn!"
+  ((partial format "Hello, %s!") "Rhea") => "Hello, Rhea!"
+  ;; Map, filter
+  (map #(+ % 5) '(1 2 3)) => '(6 7 8)
+  (filter #(> % 5) '(3 4 5 6 7)) => '(6 7)
+  ;; Local bindings
+  (let [x 5] (+ 2 x)) => 7
+  (let [x 3, y 10] (- y x)) => 7
+  (let [x 21] (let [y 3] (/ x y))) => 7
+  ;; Let it be
+  (let [x 4 y 6] (+ x y)) => 10
+  (let [y 1 z 3] (+ y z)) => 4
+  (let [z 1] z) => 1)
+
 ;; Day 4
 
 (def second-to-last
