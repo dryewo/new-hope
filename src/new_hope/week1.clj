@@ -40,13 +40,15 @@
   (second-to-last [1]) => nil
   (second-to-last nil) => nil)
 
+(def summ-it-up
+  (fn [coll] coll))
+
 (comment
-  ;; Simple time measurement (run once)
-  (let [coll (vec (range 10000))]
-    (time (second (reverse coll)))
-    (time (last (butlast coll))))
-  ;; More elaborate benchmark taking 10 seconds
-  (let [coll (vec (range 10000))]
-    (crit/quick-bench (second (reverse coll)))
-    (crit/quick-bench (last (butlast coll))))
-  )
+  (summ-it-up 1))
+
+(facts "about sum-it"
+       (summ-it-up [1 2 3]) => 6
+       (summ-it-up (list 0 -2 5 5)) => 3
+       (summ-it-up #{4 2 1}) => 7
+       (summ-it-up '(0 0 -1)) => -1
+       (summ-it-up '(1 10 3)) => 14)
