@@ -70,18 +70,23 @@
 
 
 (defn palindrom? [p]
-  "not implemented yet")
+  (if (or (empty? p) (= 1 (count p)))
+      true
+      (if (not= (first p) (last p))
+        false
+        (palindrom? (drop 1 (drop-last 1 p))))))
 
 (facts "about palindrom"
        (palindrom? '(1 2 3 4 5)) => false
        (palindrom? "racecar") => true
        (palindrom? "lezunasanuzel") => true
+       (palindrom? "clojure") => false
        (palindrom? '(1 1 3 3 1 1)) => true
        (palindrom? '(:a :b :c)) => false
        (palindrom? '(1 10 3)) => false
        ;Edge cases
-       (palindrom? '(1)) => false
-       (palindrom? '()) => false
+       (palindrom? '(1)) => true
+       (palindrom? '()) => true
        )
 
 
