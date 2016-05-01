@@ -40,15 +40,25 @@
   (second-to-last [1]) => nil
   (second-to-last nil) => nil)
 
-(def summ-it-up
-  (fn [coll] coll))
-
-(comment
-  (summ-it-up 1))
+(defn summ-it-up
+  [coll]
+  (if (empty? coll)
+    0
+    (+
+      (first coll)
+      (summ-it-up (rest coll))
+      )
+    )
+  )
 
 (facts "about sum-it"
        (summ-it-up [1 2 3]) => 6
-       (summ-it-up (list 0 -2 5 5)) => 3
-       (summ-it-up #{4 2 1}) => 7
+       (summ-it-up (list 0 -2 5 5)) => 8
+       (summ-it-up #{4 2 1}) => 7,
        (summ-it-up '(0 0 -1)) => -1
-       (summ-it-up '(1 10 3)) => 14)
+       (summ-it-up '(1 10 3)) => 14
+       ;Edge cases
+       (summ-it-up '(1)) => 1
+       (summ-it-up '()) => 0
+
+       )
