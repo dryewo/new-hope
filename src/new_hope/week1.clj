@@ -40,18 +40,21 @@
   (second-to-last [1]) => nil
   (second-to-last nil) => nil)
 
-(defn summ-it-up
-  [coll]
-  (if (empty? coll)
-    0
-    (+
-      (first coll)
-      (summ-it-up (rest coll))
-      )
-    )
-  )
+;(defn summ-it-up
+;  [coll]
+;  (if (empty? coll)
+;    0
+;    (+
+;      (first coll)
+;      (summ-it-up (rest coll))
+;      )
+;    )
+;  )
 
-(facts "about sum-it-up"
+; And then I read about "reduce"
+(def summ-it-up #(reduce + %))
+
+(facts "about summ-it-up"
        (summ-it-up [1 2 3]) => 6
        (summ-it-up (list 0 -2 5 5)) => 8
        (summ-it-up #{4 2 1}) => 7,
