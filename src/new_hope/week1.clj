@@ -51,7 +51,7 @@
     )
   )
 
-(facts "about sum-it"
+(facts "about sum-it-up"
        (summ-it-up [1 2 3]) => 6
        (summ-it-up (list 0 -2 5 5)) => 8
        (summ-it-up #{4 2 1}) => 7,
@@ -60,5 +60,16 @@
        ;Edge cases
        (summ-it-up '(1)) => 1
        (summ-it-up '()) => 0
+       )
 
+(defn duplicate-a-sequence
+  [coll]
+  coll)
+
+(facts "about duplicate-a-sequence"
+       (duplicate-a-sequence [1 2 3]) => '(1 1 2 2 3 3)
+       (duplicate-a-sequence '(:a :a :b :b)) => '(:a :a :a :a :b :b :b :b)
+       (duplicate-a-sequence [[1 2] [3 4]]) => '([1 2] [1 2] [3 4] [3 4])
+       ;Edge cases
+       (duplicate-a-sequence '()) => '(() ())
        )
