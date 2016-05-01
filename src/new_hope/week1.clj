@@ -40,6 +40,8 @@
   (second-to-last [1]) => nil
   (second-to-last nil) => nil)
 
+
+
 ;(defn sum-it-up
 ;  [coll]
 ;  (if (empty? coll)
@@ -64,6 +66,25 @@
        (sum-it-up '(1)) => 1
        (sum-it-up '()) => 0
        )
+
+
+
+(defn palindrom? [p]
+  "not implemented yet")
+
+(facts "about palindrom"
+       (palindrom? '(1 2 3 4 5)) => false
+       (palindrom? "racecar") => true
+       (palindrom? "lezunasanuzel") => true
+       (palindrom? '(1 1 3 3 1 1)) => true
+       (palindrom? '(:a :b :c)) => false
+       (palindrom? '(1 10 3)) => false
+       ;Edge cases
+       (palindrom? '(1)) => false
+       (palindrom? '()) => false
+       )
+
+
 
 (defn duplicate-a-sequence
   [coll]
