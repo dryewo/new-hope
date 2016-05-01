@@ -67,12 +67,12 @@
 
 (defn duplicate-a-sequence
   [coll]
-  coll)
+  (reduce #(conj %1 %2 %2) [] coll))
 
 (facts "about duplicate-a-sequence"
        (duplicate-a-sequence [1 2 3]) => '(1 1 2 2 3 3)
        (duplicate-a-sequence '(:a :a :b :b)) => '(:a :a :a :a :b :b :b :b)
        (duplicate-a-sequence [[1 2] [3 4]]) => '([1 2] [1 2] [3 4] [3 4])
        ;Edge cases
-       (duplicate-a-sequence '()) => '(() ())
+       (duplicate-a-sequence '()) => '()
        )
