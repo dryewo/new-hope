@@ -1,4 +1,4 @@
-(ns new-hope.assigments.assigment1
+(ns new-hope.week1.day1
   (:require [midje.sweet :refer :all]
             [criterium.core :as crit]))
 
