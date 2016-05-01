@@ -40,7 +40,7 @@
   (second-to-last [1]) => nil
   (second-to-last nil) => nil)
 
-;(defn summ-it-up
+;(defn sum-it-up
 ;  [coll]
 ;  (if (empty? coll)
 ;    0
@@ -52,17 +52,17 @@
 ;  )
 
 ; And then I read about "reduce"
-(def summ-it-up #(reduce + %))
+(def sum-it-up #(reduce + %))
 
-(facts "about summ-it-up"
-       (summ-it-up [1 2 3]) => 6
-       (summ-it-up (list 0 -2 5 5)) => 8
-       (summ-it-up #{4 2 1}) => 7,
-       (summ-it-up '(0 0 -1)) => -1
-       (summ-it-up '(1 10 3)) => 14
+(facts "about sum-it-up"
+       (sum-it-up [1 2 3]) => 6
+       (sum-it-up (list 0 -2 5 5)) => 8
+       (sum-it-up #{4 2 1}) => 7,
+       (sum-it-up '(0 0 -1)) => -1
+       (sum-it-up '(1 10 3)) => 14
        ;Edge cases
-       (summ-it-up '(1)) => 1
-       (summ-it-up '()) => 0
+       (sum-it-up '(1)) => 1
+       (sum-it-up '()) => 0
        )
 
 (defn duplicate-a-sequence
