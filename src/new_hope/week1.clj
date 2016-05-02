@@ -69,12 +69,25 @@
 
 
 
+(def find-odd #(filter odd? %))
+
+(facts "about find-odd"
+       (find-odd #{1 2 3 4 5}) => '(1 3 5)
+       ;Edge cases
+       (find-odd '(1)) => '(1)
+       (find-odd '(2)) => '()
+       (find-odd '()) => '()
+       )
+
+
+
 (defn palindrom? [p]
   (if (or (empty? p) (= 1 (count p)))
       true
       (if (not= (first p) (last p))
         false
-        (palindrom? (drop 1 (drop-last 1 p))))))
+;        (palindrom? (drop 1 (drop-last 1 p))))))
+        (recur (drop 1 (drop-last 1 p))))))
 
 (facts "about palindrom"
        (palindrom? '(1 2 3 4 5)) => false
@@ -102,3 +115,7 @@
        ;Edge cases
        (duplicate-a-sequence '()) => '()
        )
+
+
+
+;; Day 5
