@@ -75,6 +75,34 @@
   (let [y 1 z 3] (+ y z)) => 4
   (let [z 1] z) => 1)
 
+;; Day 3
+(facts "about recursion and transformations"
+  ;; Regex
+  (re-seq #"jam" "I like jam in my jam") => '("jam" "jam")
+  (apply str [1 2 3]) => "123"
+  (apply str (re-seq #"[A-Z]+" "bA1B3C2")) => "ABC"
+  ;; Recursion
+  ((fn foo [x] (when (> x 0) (conj (foo (dec x)) x))) 5) => '(5 4 3 2 1)
+  (loop [x 5
+         result []]
+    (if (> x 0)
+      (recur (dec x) (conj result (+ 2 x)))
+      result)) => '(7 6 5 4 3)
+  ;; Transforming code
+  (.toUpperCase (str (first [:cat :dog :fish]))) => ":CAT"
+  (-> [:cat :dog :fish] first str .toUpperCase) => ":CAT"
+  (= (last (sort (rest (reverse [2 5 4 1 3 6])))) => (-> [2 5 4 1 3 6] (reverse) (rest) (sort) (last)) 5)
+  (->> [1 2 3 4 5 6 7 8] (filter even?) (take 3)) => '(2 4 6)
+  (= (reduce + (map inc (take 3 (drop 2 [2 5 4 1 3 6])))) (->> [2 5 4 1 3 6] (drop 2) (take 3) (map inc) (reduce +)) 11)
+  (for [x (range 40)
+        :when (= 1 (rem x 4))] x) => '(1 5 9 13 17 21 25 29 33 37)
+  (for [x (iterate #(+ 4 %) 0)
+        :let [z (inc x)]
+        :while (< z 40)]
+    z) => '(1 5 9 13 17 21 25 29 33 37)
+  (for [[x y] (partition 2 (range 20))]
+    (+ x y)) => '(1 5 9 13 17 21 25 29 33 37))
+
 ;; Day 4
 
 (def second-to-last
