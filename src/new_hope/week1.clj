@@ -42,18 +42,6 @@
 
 
 
-;(defn sum-it-up
-;  [coll]
-;  (if (empty? coll)
-;    0
-;    (+
-;      (first coll)
-;      (summ-it-up (rest coll))
-;      )
-;    )
-;  )
-
-; And then I read about "reduce"
 (def sum-it-up #(reduce + %))
 
 (facts "about sum-it-up"
@@ -82,12 +70,9 @@
 
 
 (defn palindrom? [p]
-  (if (or (empty? p) (= 1 (count p)))
-      true
-      (if (not= (first p) (last p))
-        false
-;        (palindrom? (drop 1 (drop-last 1 p))))))
-        (recur (drop 1 (drop-last 1 p))))))
+  (if (empty? p)
+    true
+    (= (seq p) (reverse p))))
 
 (facts "about palindrom"
        (palindrom? '(1 2 3 4 5)) => false
