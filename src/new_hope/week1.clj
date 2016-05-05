@@ -107,3 +107,18 @@
 
 
 ;; Day 5
+
+(defn compress [coll]
+  (loop [input (seq coll) result []]
+    (if (empty? input)
+      result
+      (if (= (first input) (last result))
+        (recur (rest input) result)
+        (recur (rest input) (conj result (first input)))))))
+
+(facts "about compress"
+       (apply str (compress "Leeeeeerrroyyy")) => "Leroy"
+       (compress [1 1 2 3 3 2 2 3]) => '(1 2 3 2 3)
+       (compress [[1 2] [1 2] [3 4] [1 2]]) => '([1 2] [3 4] [1 2])
+       ;Edge cases
+       (compress []) => '())
