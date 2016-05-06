@@ -122,3 +122,16 @@
        (compress [[1 2] [1 2] [3 4] [1 2]]) => '([1 2] [3 4] [1 2])
        ;Edge cases
        (compress []) => '())
+
+
+
+(defn pack-a-seq [coll] coll)
+
+(facts "about pack-a seq"
+       (pack-a-seq [1 1 2 1 1 1 3 3]) => '((1 1) (2) (1 1 1) (3 3))
+       (pack-a-seq [:a :a :b :b :c]) => '((:a :a) (:b :b) (:c))
+       (pack-a-seq [[1 2] [1 2] [3 4]]) => '(([1 2] [1 2]) ([3 4]))
+       ;Edge cases
+       (pack-a-seq []) => '()
+       (pack-a-seq [[] []]) => ('([] []))
+       )
