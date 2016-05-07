@@ -104,6 +104,8 @@
     (+ x y)) => '(1 5 9 13 17 21 25 29 33 37))
 
 ;; Day 4
+(facts "about logic flows"
+  ((fn [xs] (second (reverse xs))) (list 1 2 3 4 5)) => 4)
 
 (def second-to-last
   (fn [coll]
@@ -132,3 +134,48 @@
     (crit/quick-bench (second (reverse coll)))
     (crit/quick-bench (last (butlast coll))))
   )
+
+;; Sum it all up
+(def sumseq (fn [xs]
+              (reduce + xs)))
+
+(facts "about sumseq"
+  (sumseq [1 2 3]) => 6
+  (sumseq (list 0 -2 5 5)) => 8
+  (sumseq #{4 2 1}) => 7
+  (sumseq '(0 0 -1)) => -1
+  (sumseq '(1 10 3)) => 14)
+
+;; Find the odd numbers
+(def onlyodd (fn [xs]
+               (filter odd? xs)))
+
+(facts "about onlyodd"
+  (onlyodd #{1 2 3 4 5}) => '(1 3 5)
+  (onlyodd [4 2 1 6]) => '(1)
+  (onlyodd [2 2 4 6]) => '()
+  (onlyodd [1 1 1 3]) => '(1 1 1 3))
+
+;; Palindrome Detector
+(def palindrome? (fn [s]
+                   (= (seq s) (reverse s))))
+
+(fact "about palindrom?"
+  (palindrome? '(1 2 3 4 5)) => false
+  (palindrome? "racecar") => true
+  (palindrome? [:foo :bar :foo]) => true
+  (palindrome? '(1 1 3 3 1 1)) => true
+  (palindrome? '(:a :b :c)) => false)
+
+;; Duplicate a Sequence
+(def dupe (fn [xs]
+            (reduce concat (map #(repeat 2 %) xs))))
+
+(facts "about dupe"
+  (dupe [1 2 3]) => '(1 1 2 2 3 3)
+  (dupe [:a :a :b :b]) => '(:a :a :a :a :b :b :b :b)
+  (dupe [[1 2] [3 4]]) => '([1 2] [1 2] [3 4] [3 4]))
+
+;; Day 5
+(def removedupes (fn [xs]
+                   xs))
