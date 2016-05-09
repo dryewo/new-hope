@@ -222,3 +222,24 @@
 (= (pack-seq [:a :a :b :b :c]) '((:a :a) (:b :b) (:c)))
 (= (pack-seq [[1 2] [1 2] [3 4]]) '(([1 2] [1 2]) ([3 4])))
 
+;find every Nth item
+(def drop-nth
+  (fn [coll n]
+    (keep-indexed
+      (fn [i elem]
+        (if (not= 0 (mod (inc i) n)) elem nil)) coll)))
+
+(= (drop-nth [1 2 3 4 5 6 7 8] 3) [1 2 4 5 7 8])
+(= (drop-nth [:a :b :c :d :e :f] 2) [:a :c :e])
+(= (drop-nth [1 2 3 4 5 6] 4) [1 2 3 5 6])
+
+;iterate - replecate a sequence
+(def replicate-seq
+  (fn [coll n]
+    (mapcat #(repeat n %) coll)))
+
+(= (replicate-seq [1 2 3] 2) '(1 1 2 2 3 3))
+(= (replicate-seq [:a :b] 4) '(:a :a :a :a :b :b :b :b))
+(= (replicate-seq [4 5 6] 1) '(4 5 6))
+(= (replicate-seq [[1 2] [3 4]] 2) '([1 2] [1 2] [3 4] [3 4]))
+(= (replicate-seq [44 33] 2) [44 44 33 33])
