@@ -11,8 +11,8 @@
   (- 10 (* 2 3))
   (.toUpperCase "hello world")
   (conj '(2 3 4) 1)
-  (conj '(3 4) 2 1)
-  )
+  (conj '(3 4) 2 1))
+
 
 ;; For Week 1 days 1-3 just play around a bit, use comment form to write down expressions
 
@@ -32,8 +32,8 @@
   (second [4 3 2 1])
   (first (next [4 3 2 1]))
   (butlast [1 2 3 4])
-  (last [1 2 3])
-  )
+  (last [1 2 3]))
+
 
 (facts "about second-to-last"
   (second-to-last [1 2 3 4]) => 3
@@ -48,5 +48,5 @@
   ;; More elaborate benchmark taking 10 seconds
   (let [coll (vec (range 10000))]
     (crit/quick-bench (second (reverse coll)))
-    (crit/quick-bench (last (butlast coll))))
-  )
+    (crit/quick-bench (last (butlast coll)))))
+
