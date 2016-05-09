@@ -125,7 +125,24 @@
 
 
 
-(defn pack-a-seq [coll] coll)
+(defn pack-a-seq [coll]
+  (loop [input coll current () result ()]
+    (if (empty? input)
+      (if (empty? current)
+        result
+        (conj result current))
+      (if (= (first input) (last current))
+        (recur (rest input) (conj current (first input)) result)
+        (recur
+          (rest input)
+          (list (first input))
+          (if (empty? current)
+            result
+            (conj result current)))))))
+
+(comment
+  (pack-a-seq [1 1 2 1 1 1 3 3])
+  )
 
 (facts "about pack-a seq"
        (pack-a-seq [1 1 2 1 1 1 3 3]) => '((1 1) (2) (1 1 1) (3 3))
