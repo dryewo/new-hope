@@ -62,7 +62,7 @@ New lines don't matter, any expression can be evaluated this way.
 * If you set the caret after `4`, only `4` will be evaluated, yielding `4`.
 * If you set the caret on `]`, the vector `[1 2 3]` will be evaluated, yielding `[1 2 3]`.
 * If you set the caret on `)`, the entire `(conj [1 2 3] 4)` form will be evaluated, yielding `[1 2 3 4]`.
-* If you set the caret on the closing `)` of the comment block, the comment block will be evaluated (by doing nothing), yielding `nil`.  
+* If you set the caret on the closing `)` of the comment block, the comment block will be evaluated (by doing nothing), yielding `nil`.
 
 #### Unit test expressions
 
@@ -77,7 +77,7 @@ Unit tests are expressions too, like any other Clojure code. When you evaluate a
 
 To execute a unit test, use REPL -> Send '...' to REPL context menu action.
 
-The unit testing library is called [Midje](https://github.com/marick/Midje). 
+The unit testing library is called [Midje](https://github.com/marick/Midje).
 
 #### Definitions
 
@@ -152,6 +152,9 @@ $ lein midje
 
 from the project directory.
 
+## Style guide
+
+Read this: https://github.com/bbatsov/clojure-style-guide and try to follow. Always format your code before checking in.
 
 ## License
 

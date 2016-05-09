@@ -12,6 +12,8 @@
   (.toUpperCase "hello world")
   (conj '(2 3 4) 1)
   (conj '(3 4) 2 1)
+  (conj [1 2 3] 100)
+  (println "Hello")
   )
 
 ;; For Week 1 days 1-3 just play around a bit, use comment form to write down expressions
@@ -28,6 +30,12 @@
     (second (reverse coll))))
 
 (comment
+  (= __ (set '(:a :a :b :c :c :c :c :d :d)))
+  (= __ (let [x 5] (+ 2 x)))
+  )
+
+(comment
+  (second-to-last [4 5 6 7])
   (reverse [1 2 3 4])
   (second [4 3 2 1])
   (first (next [4 3 2 1]))
@@ -38,7 +46,14 @@
 (facts "about second-to-last"
   (second-to-last [1 2 3 4]) => 3
   (second-to-last [1]) => nil
-  (second-to-last nil) => nil)
+  (second-to-last nil) => nil
+  (second-to-last []) => nil)
+
+(facts "vectors"
+  ['(:a :b :c) [:a :b :c] [:a :b :c]]
+  => [(list :a :b :c) (vec '(:a :b :c)) (vector :a :b :c)])
+
+(facts nil false)
 
 (comment
   ;; Simple time measurement (run once)
