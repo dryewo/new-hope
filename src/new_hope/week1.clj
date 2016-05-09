@@ -107,3 +107,51 @@
 
 
 ;; Day 5
+
+(defn compress [coll]
+  (loop [input (seq coll) result []]
+    (if (empty? input)
+      result
+      (if (= (first input) (last result))
+        (recur (rest input) result)
+        (recur (rest input) (conj result (first input)))))))
+
+(facts "about compress"
+       (apply str (compress "Leeeeeerrroyyy")) => "Leroy"
+       (compress [1 1 2 3 3 2 2 3]) => '(1 2 3 2 3)
+       (compress [[1 2] [1 2] [3 4] [1 2]]) => '([1 2] [3 4] [1 2])
+       ;Edge cases
+       (compress []) => '())
+
+
+
+(defn pack-a-seq [coll]
+  (loop [input coll current () result ()]
+    (if (empty? input)
+      (if (empty? current)
+        result
+        (conj result current))
+      (if (= (first input) (last current))
+        (recur (rest input) (conj current (first input)) result)
+        (recur
+          (rest input)
+          (list (first input))
+          (if (empty? current)
+            result
+            (conj result current)))))))
+
+(comment
+  (pack-a-seq [1 1 2 1 1 1 3 3])
+  )
+
+
+;
+; Not Working so far...
+;(facts "about pack-a seq"
+;       (pack-a-seq [1 1 2 1 1 1 3 3]) => '((1 1) (2) (1 1 1) (3 3))
+;       (pack-a-seq [:a :a :b :b :c]) => '((:a :a) (:b :b) (:c))
+;       (pack-a-seq [[1 2] [1 2] [3 4]]) => '(([1 2] [1 2]) ([3 4]))
+;       ;Edge cases
+;       (pack-a-seq []) => '()
+;       (pack-a-seq [[] []]) => '([] [])
+;       )
