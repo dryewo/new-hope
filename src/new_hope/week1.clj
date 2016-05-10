@@ -177,5 +177,57 @@
   (dupe [[1 2] [3 4]]) => '([1 2] [1 2] [3 4] [3 4]))
 
 ;; Day 5
-(def removedupes (fn [xs]
-                   xs))
+;; Compress a Sequence
+(defn removedupes [xs]
+  (reduce (fn [xs x]
+            (if (not= (last xs) x) (conj xs x) xs))
+    [] xs))
+
+(facts "about removedupes"
+  (apply str (removedupes "Leeeeeerrroyyy")) => "Leroy"
+  (removedupes [1 1 2 3 3 2 2 3]) => '(1 2 3 2 3)
+  (removedupes [[1 2] [1 2] [3 4] [1 2]]) => '([1 2] [3 4] [1 2]))
+
+;; Pack a Sequence
+(defn packdupes [xs]
+  (reduce (fn [xs x]
+            (if (= (last (last xs)) x)
+              (conj (pop xs) (conj (last xs) x))
+              (conj xs [x])))
+    [] xs))
+
+(facts "about packdupes"
+  (packdupes [1 1 2 1 1 1 3 3]) => '((1 1) (2) (1 1 1) (3 3))
+  (packdupes [:a :a :b :b :c]) => '((:a :a) (:b :b) (:c))
+  (packdupes [[1 2] [1 2] [3 4]]) => '(([1 2] [1 2]) ([3 4])))
+
+;; Drop Every Nth Item
+(defn with-index [xs]
+  (map vector (range 1 (inc (count xs))) xs))
+
+(defn dropnth [xs n]
+  (reduce (fn [xs [i x]]
+            (if (not= (mod i n) 0) (conj xs x) xs))
+    [] (with-index xs)))
+
+(facts "about dropnth"
+  (dropnth [1 2 3 4 5 6 7 8] 3) => [1 2 4 5 7 8]
+  (dropnth [:a :b :c :d :e :f] 2) => [:a :c :e]
+  (dropnth [1 2 3 4 5 6] 4) => [1 2 3 5 6])
+
+;; Intro to Iterate
+(facts "about iterate"
+  (take 5 (iterate #(+ 3 %) 1)) => '(1 4 7 10 13))
+
+;; Replicate a Sequence
+(defn replseq [xs n]
+  (reduce (fn [xs x]
+            (concat xs (take n (iterate identity x))))
+    [] xs))
+
+(facts "about replseq"
+  (replseq [1 2 3] 2) => '(1 1 2 2 3 3)
+  (replseq [:a :b] 4) => '(:a :a :a :a :b :b :b :b)
+  (replseq [4 5 6] 1) => '(4 5 6)
+  (replseq [[1 2] [3 4]] 2) => '([1 2] [1 2] [3 4] [3 4])
+  (replseq [44 33] 2) => [44 44 33 33])
