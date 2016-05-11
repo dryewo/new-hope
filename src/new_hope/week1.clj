@@ -180,19 +180,20 @@
 ;; Compress a Sequence
 (defn removedupes [xs]
   (reduce (fn [xs x]
-            (if (not= (last xs) x) (conj xs x) xs))
+            (if (or (empty? xs) (not= (peek xs) x)) (conj xs x) xs))
     [] xs))
 
 (facts "about removedupes"
   (apply str (removedupes "Leeeeeerrroyyy")) => "Leroy"
   (removedupes [1 1 2 3 3 2 2 3]) => '(1 2 3 2 3)
-  (removedupes [[1 2] [1 2] [3 4] [1 2]]) => '([1 2] [3 4] [1 2]))
+  (removedupes [[1 2] [1 2] [3 4] [1 2]]) => '([1 2] [3 4] [1 2])
+  (removedupes [nil]) => [nil])
 
 ;; Pack a Sequence
 (defn packdupes [xs]
   (reduce (fn [xs x]
-            (if (= (last (last xs)) x)
-              (conj (pop xs) (conj (last xs) x))
+            (if (= (peek (peek xs)) x)
+              (conj (pop xs) (conj (peek xs) x))
               (conj xs [x])))
     [] xs))
 
@@ -210,10 +211,18 @@
             (if (not= (mod i n) 0) (conj xs x) xs))
     [] (with-index xs)))
 
+(defn dropnth-better [xs n]
+  (keep-indexed (fn [i x] (if (not= (mod (inc i) n) 0) x)) xs))
+
 (facts "about dropnth"
   (dropnth [1 2 3 4 5 6 7 8] 3) => [1 2 4 5 7 8]
   (dropnth [:a :b :c :d :e :f] 2) => [:a :c :e]
   (dropnth [1 2 3 4 5 6] 4) => [1 2 3 5 6])
+
+(facts "about dropnth-better"
+  (dropnth-better [1 2 3 4 5 6 7 8] 3) => [1 2 4 5 7 8]
+  (dropnth-better [:a :b :c :d :e :f] 2) => [:a :c :e]
+  (dropnth-better [1 2 3 4 5 6] 4) => [1 2 3 5 6])
 
 ;; Intro to Iterate
 (facts "about iterate"
@@ -221,8 +230,7 @@
 
 ;; Replicate a Sequence
 (defn replseq [xs n]
-  (reduce (fn [xs x]
-            (concat xs (take n (iterate identity x))))
+  (reduce (fn [xs x] (concat xs (repeat n x)))
     [] xs))
 
 (facts "about replseq"
