@@ -41,3 +41,36 @@
 (facts "about destructuring"
   (let [[a b c d e f g] (range)] [c e]) => [2 4])
 
+;; Day 2
+;; Advanced Destructuring
+(facts "about advanced destructuring"
+  (let [[a b & c] ["cat" "dog" "bird" "fish"]] [a b]) => '("cat" "dog")
+  (let [[a b & c] ["cat" "dog" "bird" "fish"]] c) => '("bird" "fish")
+  (let [[a b & c :as d] (range 1 6)] [a b c d]) => [1 2 [3 4 5] [1 2 3 4 5]])
+
+;; A Half-Truth
+(defn half-truth [& bools]
+  (loop [t false f false [x & xs] bools]
+    (if (nil? x)
+      (and t f)
+      (recur (or t x) (or f (not x)) xs))))
+
+(facts "about half-truth"
+  (half-truth true false) => true
+  (half-truth true) => false
+  (half-truth false true false) => true
+  (half-truth true true true) => false
+  (half-truth true true true false) => true
+  (half-truth) => false)
+
+;; Greatest common divisor
+(defn gcd [a b]
+  (if (= b 0)
+    a
+    (recur b (mod a b))))
+
+(facts "about gcd"
+  (gcd 2 4) => 2
+  (gcd 10 5) => 5
+  (gcd 5 7) => 1
+  (gcd 1023 858) => 33)
