@@ -153,7 +153,16 @@
 
 
 (defn drop-nth [coll n]
-  coll)
+  (if (= n 0)
+    coll
+    (loop [i 0
+           working coll
+           result []]
+      (if (empty? working)
+        result
+        (if (= (rem (inc' i) n) 0)
+          (recur (inc' i) (rest working) result )
+          (recur (inc' i) (rest working) (conj result (first working))))))))
 
 (facts "about drop-nth"
        (drop-nth [1 2 3 4 5 6 7 8] 3) => '(1 2 4 5 7 8)
@@ -162,5 +171,4 @@
        (drop-nth [1 2 3 4 5 6 7 8] 1) => '()
        (drop-nth [1 2 3 4 5 6 7 8] 0) => '(1 2 3 4 5 6 7 8)
        (drop-nth [1 2 3] 4) => '(1 2 3)
-       (drop-nth [] 1) => '()
-       )
+       (drop-nth [] 1) => '())
