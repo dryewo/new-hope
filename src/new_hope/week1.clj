@@ -182,3 +182,15 @@
        (drop-nth [1 2 3 4 5 6 7 8] 0) => '(1 2 3 4 5 6 7 8)
        (drop-nth [1 2 3] 4) => '(1 2 3)
        (drop-nth [] 1) => '())
+
+
+
+(defn replicate-a-seq [coll n]
+  (mapcat #(replicate n %) coll))
+
+(facts "about replicate-a-seq"
+       (replicate-a-seq [1 2 3] 2) => '(1 1 2 2 3 3)
+       (replicate-a-seq [:a :b] 4) => '(:a :a :a :a :b :b :b :b)
+       (replicate-a-seq [:a :b] 1) => '(:a :b)
+       ;Edge cases
+       (replicate-a-seq [1 2 3] 0) => '())
