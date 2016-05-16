@@ -15,7 +15,7 @@
     (loop [coll [1 1] remains (- count 2)]
       (if (= 0 remains)
         coll
-        (recur (conj coll (reduce + (take-last 2 coll))) (- remains 1))))))
+        (recur (conj coll (reduce +' (take-last 2 coll))) (dec remains))))))
 
 ;TODO: assess lazy-seq for lazy implementation
 
