@@ -148,5 +148,19 @@
        (pack-a-seq [[1 2] [1 2] [3 4]]) => '(([1 2] [1 2]) ([3 4]))
        ;Edge cases
        (pack-a-seq []) => '()
-       (pack-a-seq [[] []]) => '(([] []))
+       (pack-a-seq [[] []]) => '(([] [])))
+
+
+
+(defn drop-nth [coll n]
+  coll)
+
+(facts "about drop-nth"
+       (drop-nth [1 2 3 4 5 6 7 8] 3) => '(1 2 4 5 7 8)
+       (drop-nth [:a :b :c :d :e :f] 3) => '(:a :b :d :e)
+       ;Edge cases
+       (drop-nth [1 2 3 4 5 6 7 8] 1) => '()
+       (drop-nth [1 2 3 4 5 6 7 8] 0) => '(1 2 3 4 5 6 7 8)
+       (drop-nth [1 2 3] 4) => '(1 2 3)
+       (drop-nth [] 1) => '()
        )
