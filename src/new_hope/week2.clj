@@ -127,3 +127,23 @@
   (lcm 1/3 2/5) => 2
   (lcm 3/4 1/6) => 3/2
   (lcm 7 5/7 2 3/5) => 210)
+
+;; Day 5
+;; Pascal's Triangle
+(defn pt-row [n]
+  (loop [xs [1] k 1]
+    (if (= n (dec k))
+      xs
+      (recur (conj xs (* (peek xs) (/ (- (inc n) k) k))) (inc k)))))
+
+(defn pt-row' [n] (pt-row (dec n)))
+
+(facts "about pt-row"
+  (pt-row 0) => [1]
+  (pt-row' 1) => [1]
+  (map pt-row' (range 1 6)) => [[1]
+                                [1 1]
+                                [1 2 1]
+                                [1 3 3 1]
+                                [1 4 6 4 1]]
+  (pt-row' 11) => [1 10 45 120 210 252 210 120 45 10 1])
