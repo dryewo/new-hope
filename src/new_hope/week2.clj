@@ -100,3 +100,30 @@
   (count (cart-prod
            (into #{} (range 10))
            (into #{} (range 30)))) => 300)
+
+;; Day 4
+;; Symmetric Difference
+(defn sym-diff [xs ys]
+  (clojure.set/union
+    (clojure.set/difference xs ys)
+    (clojure.set/difference ys xs)))
+
+(facts "about sym-diff"
+  (sym-diff #{1 2 3 4 5 6} #{1 3 5 7}) => #{2 4 6 7}
+  (sym-diff #{:a :b :c} #{}) => #{:a :b :c}
+  (sym-diff #{} #{4 5 6}) => #{4 5 6}
+  (sym-diff #{[1 2] [2 3]} #{[2 3] [3 4]}) => #{[1 2] [3 4]})
+
+;; Least Common Multiple
+(defn lcm [x & xs]
+  (if (empty? xs)
+    x
+    (let [y (first xs)]
+      (recur (/ (* x y) (gcd x y)) (rest xs)))))
+
+(facts "about lcm"
+  (lcm 2 3) => 6
+  (lcm 5 3 7) => 105
+  (lcm 1/3 2/5) => 2
+  (lcm 3/4 1/6) => 3/2
+  (lcm 7 5/7 2 3/5) => 210)
