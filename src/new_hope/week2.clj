@@ -74,3 +74,29 @@
   (gcd 10 5) => 5
   (gcd 5 7) => 1
   (gcd 1023 858) => 33)
+
+;; Day 3
+;; Simple closures
+(defn pow [x y] (int (Math/pow x y)))
+(defn pow' [y] (fn [x] (pow x y)))
+
+(facts "about simple closures"
+  ((pow' 2) 16) => 256
+  ((pow' 8) 2) => 256
+  (map (pow' 3) [1 2 3 4]) => [1 8 27 64]
+  (map #((pow' %) 2) [0 1 2 3 4]))
+
+;; Cartesian Product
+(defn cart-prod [xs ys]
+  (reduce (fn [prod x]
+            (into prod (map (fn [y]
+                              [x y]) ys))) #{} xs))
+
+(facts "about cart-prod"
+  (cart-prod #{"ace" "king" "queen"} #{"spade" "heart" "diamond" "club"}) =>
+  #{["ace" "spade"] ["ace" "heart"] ["ace" "diamond"] ["ace" "club"]
+    ["king" "spade"] ["king" "heart"] ["king" "diamond"] ["king" "club"]
+    ["queen" "spade"] ["queen" "heart"] ["queen" "diamond"] ["queen" "club"]}
+  (count (cart-prod
+           (into #{} (range 10))
+           (into #{} (range 30)))) => 300)
