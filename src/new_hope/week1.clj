@@ -142,13 +142,23 @@
             result
             (conj result current)))))))
 
-(facts "about pack-a seq"
+(def pack-a-seq-simple #(partition-by (fn [e] e) %))
+
+(facts "about pack-a-seq"
        (pack-a-seq [1 1 2 1 1 1 3 3]) => '((1 1) (2) (1 1 1) (3 3))
        (pack-a-seq [:a :a :b :b :c]) => '((:a :a) (:b :b) (:c))
        (pack-a-seq [[1 2] [1 2] [3 4]]) => '(([1 2] [1 2]) ([3 4]))
        ;Edge cases
        (pack-a-seq []) => '()
        (pack-a-seq [[] []]) => '(([] [])))
+
+(facts "about pack-a-seq-simple"
+       (pack-a-seq-simple [1 1 2 1 1 1 3 3]) => '((1 1) (2) (1 1 1) (3 3))
+       (pack-a-seq-simple [:a :a :b :b :c]) => '((:a :a) (:b :b) (:c))
+       (pack-a-seq-simple [[1 2] [1 2] [3 4]]) => '(([1 2] [1 2]) ([3 4]))
+       ;Edge cases
+       (pack-a-seq-simple []) => '()
+       (pack-a-seq-simple [[] []]) => '(([] [])))
 
 
 
