@@ -168,21 +168,22 @@
   (fn [coll]
     (reduce + coll)))
 
-(= (sum-it-up [1 2 3]) 6)
-(= (sum-it-up (list 0 -2 5 5)) 8)
-(= (sum-it-up #{4 2 1}) 7)
-(= (sum-it-up '(0 0 -1)) -1)
-(= (sum-it-up '(1 10 3)) 14)
+(facts "about sum-it-up"
+       (sum-it-up [1 2 3]) => 6
+       (sum-it-up (list 0 -2 5 5)) => 8
+       (sum-it-up #{4 2 1}) => 7
+       (sum-it-up '(1 10 3)) => 14)
 
 ;find odd numbers
 (def find-odds
   (fn [coll]
     (filter odd? coll)))
 
-(= (find-odds #{1 2 3 4 5}) '(1 3 5))
-(= (find-odds [4 2 1 6]) '(1))
-(= (find-odds [2 2 4 6]) '())
-(= (find-odds [1 1 1 3]) '(1 1 1 3))
+(facts "about find-odds"
+       (find-odds #{1 2 3 4 5}) => '(1 3 5)
+       (find-odds [4 2 1 6]) => '(1)
+       (find-odds [2 2 4 6]) =>'()
+       (find-odds [1 1 1 3]) => '(1 1 1 3))
 
 ;palindrome
 (def palindrome?
@@ -243,9 +244,10 @@
                                   (list (first rest-seq))
                                   (if (empty? tmp) result (conj result tmp))))))))
 
-(= (pack-seq [1 1 2 1 1 1 3 3]) '((1 1) (2) (1 1 1) (3 3)))
-(= (pack-seq [:a :a :b :b :c]) '((:a :a) (:b :b) (:c)))
-(= (pack-seq [[1 2] [1 2] [3 4]]) '(([1 2] [1 2]) ([3 4])))
+(facts "about pack-seq"
+       (pack-seq [1 1 2 1 1 1 3 3]) => '((1 1) (2) (1 1 1) (3 3))
+       (pack-seq [:a :a :b :b :c]) => '((:a :a) (:b :b) (:c))
+       (pack-seq [[1 2] [1 2] [3 4]]) => '(([1 2] [1 2]) ([3 4])))
 
 ;find every Nth item
 (def drop-nth
