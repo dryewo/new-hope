@@ -1,6 +1,7 @@
 (ns new-hope.week1
   (:require [midje.sweet :refer :all]
-            [criterium.core :as crit]))
+            [criterium.core :as crit]
+            [clojure.string :as str]))
 
 ;; After launching the REPL always run (refresh) at least once
 
@@ -53,7 +54,7 @@
 
 ;HOMEWORK /m\
 ;intro to strings
-(= "HELLO WORLD" (.toUpperCase "hello world"))
+(facts "about .toUpperase" (.toUpperCase "hello world") => "HELLO WORLD" )
 
 ;intro to lists
 (= (list ':a ':b ':c) '(:a :b :c))
@@ -185,8 +186,8 @@
 
 ;palindrome
 (def palindrome?
-  (fn [x]
-    (= (seq x) (reverse x))))
+           (fn [x]
+             (= (seq x) (reverse x))))
 
 (false? (palindrome? '(1 2 3 4 5)))
 (true? (palindrome? "racecar"))
@@ -200,23 +201,47 @@
     (reverse
       (reduce #(cons %2 (cons %2 %1)) '() coll))))
 
-(= (duplicate [1 2 3]) '(1 1 2 2 3 3))
-(= (duplicate [:a :a :b :b]) '(:a :a :a :a :b :b :b :b))
-(= (duplicate [[1 2] [3 4]]) '([1 2] [1 2] [3 4] [3 4]))
+(facts "about duplicate"
+       (duplicate [1 2 3]) => '(1 1 2 2 3 3)
+       (duplicate [:a :a :b :b]) => '(:a :a :a :a :b :b :b :b)
+       (duplicate [[1 2] [3 4]]) '([1 2] [1 2] [3 4] [3 4]))
 
 ;compress a sequence (remove duplicates)
+(comment (def compress-seq
+           (fn [coll]
+             (dedupe coll))))
+
+;same with loop
 (def compress-seq
   (fn [coll]
-    (dedupe coll)))
+    (loop [rest-seq coll result[]]
+      (if (empty? rest-seq) result
+      (if (empty? result) (recur (next rest-seq) (conj result (first rest-seq)))
+                          (if (= (first rest-seq) (last result))
+                            (recur (next rest-seq) result)
+                            (recur (next rest-seq) (conj result (first rest-seq)))))))))
 
-(= (apply str (compress-seq "Leeeeeerrroyyy")) "Leroy")
-(= (compress-seq [1 1 2 3 3 2 2 3]) '(1 2 3 2 3))
-(= (compress-seq [[1 2] [1 2] [3 4] [1 2]]) '([1 2] [3 4] [1 2]))
+
+(facts "about compress-seq"
+       (apply str (compress-seq "Leeeeeerrroyyy")) => "Leroy"
+       (compress-seq [1 1 2 3 3 2 2 3]) =>  '(1 2 3 2 3)
+       (compress-seq [[1 2] [1 2] [3 4] [1 2]]) => '([1 2] [3 4] [1 2]))
 
 ;pack sequence
+(comment (def pack-seq
+           (fn [coll]
+             (partition-by identity coll))))
+
+;same with loop
 (def pack-seq
   (fn [coll]
-    (partition-by identity coll)))
+    (loop [rest-seq coll tmp[] result[]]
+      (if (empty? rest-seq) (if (empty? tmp) result (conj result tmp))
+                         (if (= (first rest-seq) (last tmp))
+                           (recur (next rest-seq) (conj tmp (first rest-seq)) result)
+                           (recur (next rest-seq)
+                                  (list (first rest-seq))
+                                  (if (empty? tmp) result (conj result tmp))))))))
 
 (= (pack-seq [1 1 2 1 1 1 3 3]) '((1 1) (2) (1 1 1) (3 3)))
 (= (pack-seq [:a :a :b :b :c]) '((:a :a) (:b :b) (:c)))
@@ -227,19 +252,21 @@
   (fn [coll n]
     (keep-indexed
       (fn [i elem]
-        (if (not= 0 (mod (inc i) n)) elem nil)) coll)))
+        (when (pos? (mod (inc i) n)) elem)) coll)))
 
-(= (drop-nth [1 2 3 4 5 6 7 8] 3) [1 2 4 5 7 8])
-(= (drop-nth [:a :b :c :d :e :f] 2) [:a :c :e])
-(= (drop-nth [1 2 3 4 5 6] 4) [1 2 3 5 6])
+(facts "about drop-nth"
+       (drop-nth [1 2 3 4 5 6 7 8] 3) => [1 2 4 5 7 8]
+       (drop-nth [:a :b :c :d :e :f] 2) => [:a :c :e]
+       (drop-nth [1 2 3 4 5 6] 4) => [1 2 3 5 6])
 
 ;iterate - replecate a sequence
 (def replicate-seq
   (fn [coll n]
     (mapcat #(repeat n %) coll)))
 
-(= (replicate-seq [1 2 3] 2) '(1 1 2 2 3 3))
-(= (replicate-seq [:a :b] 4) '(:a :a :a :a :b :b :b :b))
-(= (replicate-seq [4 5 6] 1) '(4 5 6))
-(= (replicate-seq [[1 2] [3 4]] 2) '([1 2] [1 2] [3 4] [3 4]))
-(= (replicate-seq [44 33] 2) [44 44 33 33])
+(facts "about replicate-seq"
+       (replicate-seq [1 2 3] 2) => '(1 1 2 2 3 3)
+       (replicate-seq [:a :b] 4) =>'(:a :a :a :a :b :b :b :b)
+       (replicate-seq [4 5 6] 1) =>'(4 5 6)
+       (replicate-seq [[1 2] [3 4]] 2) => '([1 2] [1 2] [3 4] [3 4])
+       (replicate-seq [44 33] 2) =>[44 44 33 33])
