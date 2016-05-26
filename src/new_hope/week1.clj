@@ -69,7 +69,19 @@
 ;; Homework
 
 ;; Sum It All Up
-(defn sum [coll] (if (empty? coll) 0 (+ (first coll) (sum (rest coll)))))
+(comment
+  (defn sum [coll]
+    (if (empty? coll)
+      0
+      (+ (first coll) (sum (rest coll)))))
+  )
+
+(defn sum [coll]
+  (loop [c coll total 0]
+    (if (empty? c)
+      total
+      (recur (rest c) (+' (first c) total)))))
+
 
 (facts "about sum"
        (sum [1 2 3]) => 6
@@ -98,7 +110,18 @@
        (palindrom? '(:a :b :c)) => false)
 
 ;; Duplicate a Sequence
-(defn dup-seq [coll] (if (empty? coll) '() (conj (dup-seq (rest coll)) (first coll) (first coll))))
+(comment
+  (defn dup-seq [coll]
+    (if (empty? coll)
+      '()
+      (conj (dup-seq (rest coll)) (first coll) (first coll))))
+  )
+
+(defn dup-seq [coll]
+  (loop [c coll r []]
+    (if (empty? c)
+      r
+      (recur (rest c) (conj r (first c) (first c))))))
 
 (facts "about dup-seq"
        (dup-seq [1 2 3]) => '(1 1 2 2 3 3)
@@ -109,7 +132,7 @@
 ;; Day 5
 
 ;; Compress a Sequence
-(defn compress-seq [coll] (map #(first %) (partition-by #(do %) coll)))
+(defn compress-seq [coll] (map first (partition-by identity coll)))
 
 (facts "about compress-seq"
        (apply str (compress-seq "Leeeeeerrroyyy")) => "Leroy"
@@ -117,15 +140,44 @@
        (compress-seq [[1 2] [1 2] [3 4] [1 2]]) => '([1 2] [3 4] [1 2]))
 
 ;; Pack a Sequence
-(defn pack-seq [coll] (partition-by #(do %) coll))
+(comment
+  (defn pack-seq [coll] (partition-by identity coll))
+  )
+
+(defn pack-seq [coll]
+  (loop [c coll r [] group [] last (first c)]
+    (if (empty? c)
+      (if (empty? group) r (conj r group))
+      (if (= last (first c))
+        (recur (rest c) r (conj group (first c)) (first c))
+        (recur (rest c) (conj r group) [(first c)] (first c))
+        )
+      )))
 
 (facts "about pack-seq"
        (pack-seq [1 1 2 1 1 1 3 3]) => '((1 1) (2) (1 1 1) (3 3))
        (pack-seq [:a :a :b :b :c]) => '((:a :a) (:b :b) (:c))
-       (pack-seq [[1 2] [1 2] [3 4]]) => '(([1 2] [1 2]) ([3 4])))
+       (pack-seq [[1 2] [1 2] [3 4]]) => '(([1 2] [1 2]) ([3 4]))
+       (pack-seq [1]) => '((1))
+       (pack-seq []) => '())
 
 ;; Drop Every Nth Item
-(defn drop-nth [coll n] (flatten (map #(if (= (count %) n) (butlast %) %) (partition-all n coll))))
+(comment
+  (defn drop-nth [coll n]
+    (flatten (map #(if (= (count %) n) (butlast %) %) (partition-all n coll))))
+  )
+(comment
+  (defn drop-nth [coll n]
+    (apply concat (map #(if (= (count %) n) (butlast %) %) (partition-all n coll))))
+  )
+
+(defn drop-nth [coll n]
+  (loop [c coll r [] cnt 1]
+    (if (empty? c)
+      r
+      (if (= cnt n)
+        (recur (rest c) r 1)
+        (recur (rest c) (conj r (first c)) (inc cnt))))))
 
 (facts "about drop-nth"
        (drop-nth [1 2 3 4 5 6 7 8] 3) => [1 2 4 5 7 8]
