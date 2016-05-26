@@ -191,7 +191,12 @@
   )
 
 ;; Replicate a Sequence
-(defn repl-seq [coll n] (flatten (map #(take n (repeat %)) coll)))
+(comment
+  (defn repl-seq [coll n] (flatten (map #(take n (repeat %)) coll)))
+  )
+
+(defn repl-seq [coll n] (apply concat (map #(take n (repeat %)) coll)))
+
 
 (facts "about repl-seq"
        (repl-seq [1 2 3] 2) '(1 1 2 2 3 3)
