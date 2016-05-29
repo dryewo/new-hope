@@ -15,3 +15,12 @@
 						out
 						(recur	(rest	in)
 						(conj out (str	"Alice	is	"	(first	in)))))))
+
+Week1:
+* Reader Macro
+? ->>
+
+* pattern match as in scala:
+case xs :: xxs =>
+
+* check emptyness in function args.
