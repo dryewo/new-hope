@@ -16,11 +16,11 @@
               result []]
          (if (> x 0)
            (recur (dec x) (conj result (+ 2 x)))
-           result)) => [7 6 5 4 3] )
+           result)) => [7 6 5 4 3])
 
 ;Rearranging	Code:	->
 (facts "rearg code"
- (-> [2 5 4 1 3 6] (reverse) (rest) (sort)) => [1 2 3 4 5])
+       (-> [2 5 4 1 3 6] (reverse) (rest) (sort)) => [1 2 3 4 5])
 
 (facts "->> reader"
        (->> [2 5 4 1 3 6] (drop 2) (take 3) (map inc)) => [5 2 4])
@@ -35,22 +35,24 @@
       (rest in)
       (conj out (str "alice is " (first in))))))
 
-(alice adjs [])
 
 (defn countdown [x]
   (if (= x 0) 0
               (recur (- x 1))))
 
-(countdown 10000)
+(comment
+  (alice adjs [])
+  (countdown 10000)
+  (take 5 (map #(str %) (range)))
+  (map #(println %) adjs)
+  (take 15 (cycle ["adfa" "sadfsa"]))
+  (reduce + [1 2 3])
+  (reduce (fn [r x] (+ r x)) [1 2 3])
+  )
 
 (def animals [:mouse :duck :dodo :lory :eaglet])
 
-(take 5 (map #(str %) (range)))
 
-(map #(println %) adjs)
 
-(take 15 (cycle ["adfa" "sadfsa"]))
 
-(reduce + [1 2 3])
 
-(reduce (fn [r x] (+ r x)) [1 2 3])
