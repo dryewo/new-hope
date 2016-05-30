@@ -14,8 +14,8 @@
        (penultimate [[1 2] [3 4]]) => [1 2])
 
 ;Write	a	function	which	returns	the	sum	of	a	sequence	of	numbers.
-(def sumItUp
-  #(reduce + 0 %))
+(defn sumItUp [coll]
+  (reduce + 0 coll))
 
 (facts "" (sumItUp [1 2 3]) => 6)
 (facts "" (sumItUp #{4 2 1}) => 7)
@@ -31,31 +31,39 @@
 (defn my-odd [x]
   (filter isOdd x))
 
-(facts "" (isOdd 2) => false)
-(facts "" (isOdd 3) => true)
-(facts "" (my-odd #{1 2 3 4 5}) => '(1 3 5))
-(facts "" (my-odd [4 2 1 6]) => '(1))
-(facts "" (my-odd [2 2 4 6]) => '())
-(facts "" (my-odd [1 1 1 3]) => '(1 1 1 3))
+(facts ""
+       (isOdd 2) => false
+       (isOdd 3) => true
+       (my-odd #{1 2 3 4 5}) => '(1 3 5)
+       (my-odd [4 2 1 6]) => '(1)
+       (my-odd [2 2 4 6]) => '()
+       (my-odd [1 1 1 3]) => '(1 1 1 3)
+       )
 
 ;Write	a	function	which	returns	true	if	the	given	sequence	is	a	palindrome.	Hint:	“racecar”
 ;does	not	equal	‘(\r	\a	\c	\e	\c	\a	\r)
-(defn palin
-  ([in rev]
-   (if (empty? in)
-     true
-     (if (= (first in) (first rev))
-       (recur (rest in) (rest rev))
-       false)
-     )
-    )
+; cond
+
+(defn isPalindrome [st]
+  (defn palin [in rev]
+    (if (= in rev) true false))
+  (palin (seq st) (reverse st)))
+
+(facts "is Palindrome"
+       (isPalindrome '(1 2 3 4 5)) => false
+       (isPalindrome "racecar") => true
+       (isPalindrome [:foo :bar :foo]) => true
+       (isPalindrome '(1 1 3 3 1 1)) => true
+       (isPalindrome '(:a :b :c)) => false)
+
+;Write	a	function	which	duplicates	each	element	of	a	sequence.
+(defn dups [[x & more]]
+  (if (= x nil)
+    []
+    (cons x (cons x (dups more))))
   )
-(palin "stss" "stss")
-;(defn isPalindrome [st]
-;
-;  (palin (st) (reverse st))
-;  )
-;(false?	(__	'(1	2	3	4	5)))(true?	(__	"racecar"))
-;(true?	(__	[:foo	:bar	:foo]))
-;(true?	(__	'(1	1	3	3	1	1)))
-;(false?	(__	'(:a	:b	:c)))
+(facts "dups"
+       (dups [1 2 3]) => '(1 1 2 2 3 3)
+       (dups [:a :a :b :b]) => '(:a :a :a :a :b :b :b :b)
+       (dups [[1 2] [3 4]]) => '([1 2] [1 2] [3 4] [3 4])
+       (dups [[1 2] [3 4]]) => '([1 2] [1 2] [3 4] [3 4]))
