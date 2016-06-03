@@ -37,8 +37,7 @@
        (my-odd #{1 2 3 4 5}) => '(1 3 5)
        (my-odd [4 2 1 6]) => '(1)
        (my-odd [2 2 4 6]) => '()
-       (my-odd [1 1 1 3]) => '(1 1 1 3)
-       )
+       (my-odd [1 1 1 3]) => '(1 1 1 3))
 
 ;Write	a	function	which	returns	true	if	the	given	sequence	is	a	palindrome.	Hint:	“racecar”
 ;does	not	equal	‘(\r	\a	\c	\e	\c	\a	\r)
@@ -58,10 +57,8 @@
 
 ;Write	a	function	which	duplicates	each	element	of	a	sequence.
 (defn dups [[x & more]]
-  (if (= x nil)
-    []
-    (cons x (cons x (dups more))))
-  )
+  (if (= x nil) [] (cons x (cons x (dups more)))))
+
 (facts "dups"
        (dups [1 2 3]) => '(1 1 2 2 3 3)
        (dups [:a :a :b :b]) => '(:a :a :a :a :b :b :b :b)

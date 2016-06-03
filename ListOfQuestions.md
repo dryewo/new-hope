@@ -24,3 +24,5 @@ Week1:
 case xs :: xxs =>
 
 * check emptyness in function args.
+
+* cons vs conj
