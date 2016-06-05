@@ -95,9 +95,9 @@
 
 (facts "about gcd"
        (gcd 2 4) => 2
-       (gcd 10 5) 5
-       (gcd 5 7) 1
-       (gcd 1023 858) 33)
+       (gcd 10 5) => 5
+       (gcd 5 7) => 1
+       (gcd 1023 858) => 33)
 
 ;; DAY 3
 
