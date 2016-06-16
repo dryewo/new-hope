@@ -94,11 +94,11 @@
        (palindrome? '(:a :b :c)) => false
 )
 ;; dublicate sequence
-(defn duplicate [xs] (flatten (for [x xs] [x x])))
-
+(defn duplicate [xs]
+  (reduce concat (map #(take 2 (repeat %)) xs)))
 (facts "duplicate test"
        (duplicate [1 2 3]) => '(1 1 2 2 3 3)
-       (duplicate [:a :a :b :b]) =>'(:a :a :a :a :b :b :b :b)
+       (duplicate [:a :a :b :b]) => '(:a :a :a :a :b :b :b :b)
        (duplicate [[1 2] [3 4]]) => '([1 2] [1 2] [3 4] [3 4])
        (duplicate [[1 2] [3 4]]) => '([1 2] [1 2] [3 4] [3 4])
        )
