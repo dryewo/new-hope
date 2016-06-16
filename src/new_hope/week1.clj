@@ -65,3 +65,40 @@
     (crit/quick-bench (second (reverse coll)))
     (crit/quick-bench (last (butlast coll))))
   )
+;; sum it up
+(defn sum-it-all [xs] (reduce + xs))
+(facts "sum it all test"
+  (sum-it-all [1 2 3]) => 6
+  (sum-it-all (list 0 -2 5 5)) => 8
+  (sum-it-all #{4 2 1}) => 7
+  (sum-it-all '(0 0 -1)) => -1
+  (sum-it-all '(1 10 3)) => 14
+)
+;; odds only
+(defn odds-only [xs] (filter odd? xs))
+
+(facts "odds only test"
+       (odds-only #{1 2 3 4 5}) => '(1 3 5)
+       (odds-only [4 2 1 6]) => '(1)
+       (odds-only [2 2 4 6]) => '()
+       (odds-only [1 1 1 3]) => '(1 1 1 3)
+
+       )
+;; palindrome detector
+(defn palindrome? [xs] (= (seq xs) (reverse (seq xs))))
+(facts "palindrome"
+       (palindrome? '(1 2 3 4 5)) => false
+       (palindrome? "racecar") => true
+       (palindrome? [:foo :bar :foo]) => true
+       (palindrome? '(1 1 3 3 1 1)) => true
+       (palindrome? '(:a :b :c)) => false
+)
+;; dublicate sequence
+(defn duplicate [xs] (flatten (for [x xs] [x x])))
+
+(facts "duplicate test"
+       (duplicate [1 2 3]) => '(1 1 2 2 3 3)
+       (duplicate [:a :a :b :b]) =>'(:a :a :a :a :b :b :b :b)
+       (duplicate [[1 2] [3 4]]) => '([1 2] [1 2] [3 4] [3 4])
+       (duplicate [[1 2] [3 4]]) => '([1 2] [1 2] [3 4] [3 4])
+       )
