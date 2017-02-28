@@ -105,7 +105,7 @@ When a file is reloaded, all the unit tests in it are automatically run.
 
 ### Doing an exercise
 
-Starting from Week 1 Day 4, the goal of every exercise is to write a funtction.
+Starting from Week 1 Day 4, the goal of every exercise is to write a function.
 
 Correctness of the implementation can be checked on the exercise webpage, and the checker there expects it to be in the form of anonymous function:
 
