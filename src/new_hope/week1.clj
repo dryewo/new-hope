@@ -21,7 +21,10 @@
 ;; Unit test is just an expression that declares expectations using a simple DSL
 ;; The whole form returns true or false when evaluated
 (facts "some facts"
-  (second [2 3 4]) => 3)
+       (second [2 3 4]) => 3)
+
+(facts "some facts"
+       (first [2 3 4]) => 2)
 
 ;; Day 4
 
@@ -35,23 +38,27 @@
   )
 
 (comment
+  ;(= (__ [1 2 3]) '(1 1 2 2 3 3))
+
   (second-to-last [4 5 6 7])
   (reverse [1 2 3 4])
   (second [4 3 2 1])
   (first (next [4 3 2 1]))
-  (butlast [1 2 3 4])
+  (butlast [1 2 3 4])   
+
   (last [1 2 3])
+  (filter odd? [1 2 3])
   )
 
 (facts "about second-to-last"
-  (second-to-last [1 2 3 4]) => 3
-  (second-to-last [1]) => nil
-  (second-to-last nil) => nil
-  (second-to-last []) => nil)
+       (second-to-last [1 2 3 4]) => 3
+       (second-to-last [1]) => nil
+       (second-to-last nil) => nil
+       (second-to-last []) => nil)
 
 (facts "vectors"
-  ['(:a :b :c) [:a :b :c] [:a :b :c]]
-  => [(list :a :b :c) (vec '(:a :b :c)) (vector :a :b :c)])
+       ['(:a :b :c) [:a :b :c] [:a :b :c]]
+       => [(list :a :b :c) (vec '(:a :b :c)) (vector :a :b :c)])
 
 (facts nil false)
 
@@ -65,3 +72,34 @@
     (crit/quick-bench (second (reverse coll)))
     (crit/quick-bench (last (butlast coll))))
   )
+
+(defn sum-it-all-up
+  [col]
+  (reduce + col))
+
+(defn find-the-odd
+  [col]
+  (filter odd? col))
+
+(defn is-palindrome
+  [col]
+  (let [reverse-fun (if (string? col) clojure.string/reverse reverse)]
+    (= (reverse-fun col) col)))
+
+(defn duplicate
+  [col]
+  (reverse
+    (reduce (fn [acc element]
+              (conj acc element element)) '() col)))
+
+(defn deduplicate
+  [col]
+  (let [reverse-fun (if (string? col) #(reverse (apply str %)) reverse)]
+    (reverse-fun
+      (reduce
+        (fn
+          [acc element]
+          (if (not= (first acc) element)
+            (conj acc element)
+            acc))
+        '() col))))
