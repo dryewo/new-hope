@@ -55,13 +55,157 @@
 
 (facts nil false)
 
-(comment
-  ;; Simple time measurement (run once)
-  (let [coll (vec (range 10000))]
-    (time (second (reverse coll)))
-    (time (last (butlast coll))))
-  ;; More elaborate benchmark taking 10 seconds
-  (let [coll (vec (range 10000))]
-    (crit/quick-bench (second (reverse coll)))
-    (crit/quick-bench (last (butlast coll))))
-  )
+
+
+(def sum-it-up #(reduce + %))
+
+(facts "about sum-it-up"
+       (sum-it-up [1 2 3]) => 6
+       (sum-it-up (list 0 -2 5 5)) => 8
+       (sum-it-up #{4 2 1}) => 7,
+       (sum-it-up '(0 0 -1)) => -1
+       (sum-it-up '(1 10 3)) => 14
+       ;Edge cases
+       (sum-it-up '(1)) => 1
+       (sum-it-up '()) => 0
+       )
+
+
+
+(def find-odd #(filter odd? %))
+
+(facts "about find-odd"
+       (find-odd #{1 2 3 4 5}) => '(1 3 5)
+       ;Edge cases
+       (find-odd '(1)) => '(1)
+       (find-odd '(2)) => '()
+       (find-odd '()) => '()
+       )
+
+
+
+(defn palindrom? [p]
+  (if (empty? p)
+    true
+    (= (seq p) (reverse p))))
+
+(facts "about palindrom"
+       (palindrom? '(1 2 3 4 5)) => false
+       (palindrom? "racecar") => true
+       (palindrom? "lezunasanuzel") => true
+       (palindrom? "clojure") => false
+       (palindrom? '(1 1 3 3 1 1)) => true
+       (palindrom? '(:a :b :c)) => false
+       (palindrom? '(1 10 3)) => false
+       ;Edge cases
+       (palindrom? '(1)) => true
+       (palindrom? '()) => true
+       )
+
+
+
+(defn duplicate-a-sequence
+  [coll]
+  (mapcat #(list % %) coll))
+  ;  (reduce #(conj %1 %2 %2) [] coll))
+
+(facts "about duplicate-a-sequence"
+       (duplicate-a-sequence [1 2 3]) => '(1 1 2 2 3 3)
+       (duplicate-a-sequence '(:a :a :b :b)) => '(:a :a :a :a :b :b :b :b)
+       (duplicate-a-sequence [[1 2] [3 4]]) => '([1 2] [1 2] [3 4] [3 4])
+       ;Lazyness test
+       (take 6 (duplicate-a-sequence (range))) => '(0 0 1 1 2 2)
+       ;Edge cases
+       (duplicate-a-sequence '()) => '()
+       )
+
+
+
+;; Day 5
+
+(defn compress [coll]
+  (loop [input (seq coll) result []]
+    (if (empty? input)
+      result
+      (if (= (first input) (last result))
+        (recur (rest input) result)
+        (recur (rest input) (conj result (first input)))))))
+
+(facts "about compress"
+       (apply str (compress "Leeeeeerrroyyy")) => "Leroy"
+       (compress [1 1 2 3 3 2 2 3]) => '(1 2 3 2 3)
+       (compress [[1 2] [1 2] [3 4] [1 2]]) => '([1 2] [3 4] [1 2])
+       ;Edge cases
+       (compress []) => '())
+
+
+
+(defn pack-a-seq [coll]
+  (loop [input coll
+         current []
+         result []]
+    (if (empty? input)
+      (if (empty? current)
+        result
+        (conj result current))
+      (if (= (first input) (last current))
+        (recur (rest input) (conj current (first input)) result)
+        (recur
+          (rest input)
+          (list (first input))
+          (if (empty? current)
+            result
+            (conj result current)))))))
+
+(def pack-a-seq-simple #(partition-by (fn [e] e) %))
+
+(facts "about pack-a-seq"
+       (pack-a-seq [1 1 2 1 1 1 3 3]) => '((1 1) (2) (1 1 1) (3 3))
+       (pack-a-seq [:a :a :b :b :c]) => '((:a :a) (:b :b) (:c))
+       (pack-a-seq [[1 2] [1 2] [3 4]]) => '(([1 2] [1 2]) ([3 4]))
+       ;Edge cases
+       (pack-a-seq []) => '()
+       (pack-a-seq [[] []]) => '(([] [])))
+
+(facts "about pack-a-seq-simple"
+       (pack-a-seq-simple [1 1 2 1 1 1 3 3]) => '((1 1) (2) (1 1 1) (3 3))
+       (pack-a-seq-simple [:a :a :b :b :c]) => '((:a :a) (:b :b) (:c))
+       (pack-a-seq-simple [[1 2] [1 2] [3 4]]) => '(([1 2] [1 2]) ([3 4]))
+       ;Edge cases
+       (pack-a-seq-simple []) => '()
+       (pack-a-seq-simple [[] []]) => '(([] [])))
+
+
+
+(defn drop-nth [coll n]
+  (if (= n 0)
+    coll
+    (loop [i 0
+           working coll
+           result []]
+      (if (empty? working)
+        result
+        (if (= (rem (inc' i) n) 0)
+          (recur (inc' i) (rest working) result )
+          (recur (inc' i) (rest working) (conj result (first working))))))))
+
+(facts "about drop-nth"
+       (drop-nth [1 2 3 4 5 6 7 8] 3) => '(1 2 4 5 7 8)
+       (drop-nth [:a :b :c :d :e :f] 3) => '(:a :b :d :e)
+       ;Edge cases
+       (drop-nth [1 2 3 4 5 6 7 8] 1) => '()
+       (drop-nth [1 2 3 4 5 6 7 8] 0) => '(1 2 3 4 5 6 7 8)
+       (drop-nth [1 2 3] 4) => '(1 2 3)
+       (drop-nth [] 1) => '())
+
+
+
+(defn replicate-a-seq [coll n]
+  (mapcat #(replicate n %) coll))
+
+(facts "about replicate-a-seq"
+       (replicate-a-seq [1 2 3] 2) => '(1 1 2 2 3 3)
+       (replicate-a-seq [:a :b] 4) => '(:a :a :a :a :b :b :b :b)
+       (replicate-a-seq [:a :b] 1) => '(:a :b)
+       ;Edge cases
+       (replicate-a-seq [1 2 3] 0) => '())
